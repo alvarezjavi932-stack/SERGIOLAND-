@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Portal interno de gestión de Sergioland Roleplay.">
+<title>Sergioland Roleplay — Portal</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,Arial;background:#f3f6fb;color:#182238}button,input,select,textarea{font:inherit}
+.hidden{display:none!important}.login{min-height:100vh;display:grid;place-items:center;padding:20px;background:linear-gradient(135deg,#10183a,#4169d5,#ee72ad)}
+.loginbox{width:min(470px,100%);background:#fff;border-radius:28px;padding:36px;box-shadow:0 25px 80px #07112c66;text-align:center}.logo{font-size:34px;font-weight:950;color:#16265d}.ride{font-size:58px}.muted{color:#77839a}.input,.modal input,.modal select,.modal textarea{width:100%;padding:12px;border:1px solid #dce3ee;border-radius:10px;background:#fff;margin:7px 0;outline:none}.primary{background:#4169d5;color:#fff;border:0;border-radius:10px;padding:12px 16px;font-weight:800;cursor:pointer}.secondary{background:#edf1fa;color:#26385f;border:0;border-radius:10px;padding:11px 14px;font-weight:700;cursor:pointer}.danger{background:#c83e4b;color:#fff;border:0;border-radius:9px;padding:8px 11px;cursor:pointer}
+.app{display:grid;grid-template-columns:255px 1fr;min-height:100vh}.side{background:#101936;color:#fff;padding:20px 15px}.brand{font-weight:950;font-size:20px;margin:5px 10px 24px}.brand small{display:block;font-size:10px;color:#8fa4dc;margin-top:4px}.nav button{width:100%;border:0;background:transparent;color:#bdc8e6;text-align:left;padding:12px 13px;border-radius:11px;margin:2px 0;cursor:pointer}.nav button:hover,.nav button.active{background:#27345d;color:#fff}.logout{margin-top:20px!important;color:#ff9ba3!important}.main{padding:30px;max-width:1250px;width:100%;margin:auto}.header{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:24px}.userpill{background:#fff;border:1px solid #e0e6ef;border-radius:999px;padding:9px 14px;font-size:13px}.hero{padding:28px;border-radius:20px;background:linear-gradient(120deg,#4169d5,#7b5bd8);color:white;margin-bottom:18px}.hero h1{margin:0 0 7px}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:16px 0}.stat,.panel,.tile{background:#fff;border:1px solid #e1e7f0;border-radius:17px;padding:19px;box-shadow:0 5px 20px #20365b0b}.stat b{font-size:28px;display:block;margin-top:5px}.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.tile{cursor:pointer}.tile:hover{border-color:#6d86d9;transform:translateY(-2px)}.tile .ico{font-size:28px}.toolbar{display:flex;gap:9px;margin-bottom:14px}.toolbar .input{flex:1;margin:0}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:15px}.notice{padding:14px;border-radius:11px;background:#edf3ff;margin:8px 0}.success{background:#e3f8ef}.warn{background:#fff4dd}.badge{display:inline-block;padding:5px 9px;border-radius:999px;font-size:12px;font-weight:800}.red{background:#ffe2e5;color:#b72d3a}.green{background:#def7eb;color:#177653}.blue{background:#e3eaff;color:#355cc1}.yellow{background:#fff0c7;color:#946600}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:12px;border-bottom:1px solid #edf0f5;vertical-align:top}th{font-size:12px;color:#748097}.modal{position:fixed;inset:0;background:#0b122999;display:grid;place-items:center;padding:20px;z-index:5}.modalbox{width:min(550px,100%);background:#fff;border-radius:20px;padding:24px;max-height:90vh;overflow:auto}.actions{display:flex;justify-content:flex-end;gap:9px;margin-top:10px}.toast{position:fixed;right:18px;bottom:18px;background:#17213d;color:white;padding:13px 16px;border-radius:10px;z-index:10}
+@media(max-width:900px){.app{grid-template-columns:1fr}.side{padding:11px}.nav{display:flex;overflow:auto}.nav button{white-space:nowrap}.stats,.tiles{grid-template-columns:repeat(2,1fr)}.main{padding:18px}.grid2{grid-template-columns:1fr}}
+@media(max-width:560px){.stats,.tiles{grid-template-columns:1fr}.header{flex-direction:column;align-items:flex-start}table{font-size:12px}.toolbar{flex-wrap:wrap}}
+
+/* Mejoras visuales y de accesibilidad */
+:focus-visible{outline:3px solid #f0a2cf;outline-offset:3px}
+button{transition:filter .15s ease,transform .15s ease}button:hover{filter:brightness(.97)}
+.panel{overflow-x:auto}.notice{overflow-wrap:anywhere}.hero p{line-height:1.6}
+.userpill{overflow-wrap:anywhere}.security-note{padding:12px 14px;border-radius:12px;background:#fff4dd;color:#77510b;font-size:13px;margin:0 0 16px}
+@media(max-width:560px){.loginbox{padding:25px 20px}.main{padding:14px}.stat,.panel,.tile{padding:15px}th,td{padding:8px}.modal{padding:10px}.modalbox{padding:18px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<section id="login" class="login">
+ <div class="loginbox"><div class="ride">🎢</div><div class="logo">SERGIOLAND</div><p class="muted">ROLEPLAY · PORTAL INTERNO</p>
+ <h2>Acceso al parque</h2><p class="muted">Introduce tu usuario de Discord para entrar.</p><p class="security-note">Modo demostración: este acceso no verifica tu identidad. No introduzcas contraseñas ni datos privados.</p>
+ <input id="loginUser" class="input" maxlength="32" placeholder="Ej. Sergio_1234">
+ <button class="primary" style="width:100%;margin-top:6px" onclick="login()">ENTRAR AL PARQUE</button><p id="loginErr" class="muted"></p></div>
+</section>
+
+<section id="app" class="app hidden">
+<aside class="side"><div class="brand">🎢 SERGIOLAND<small>ROLEPLAY · PORTAL INTERNO</small></div>
+<nav id="nav">
+<button class="active" onclick="page('inicio',this)">🏠 Inicio</button>
+<button onclick="page('sanciones',this)">⚠️ Sanciones</button>
+<button onclick="page('perfil',this)">👤 Mi perfil</button>
+<button onclick="page('historial',this)">📋 Historial</button>
+<button onclick="page('estadisticas',this)">📊 Estadísticas</button>
+<button onclick="page('avisos',this)">📢 Avisos</button>
+<button onclick="page('personal',this)">🎟️ Personal</button>
+<button onclick="page('departamentos',this)">🏢 Departamentos</button>
+<button onclick="page('turnos',this)">🕐 Turnos</button>
+<button onclick="page('incidencias',this)">🚨 Incidencias</button>
+<button onclick="page('normas',this)">📖 Normas</button>
+<button onclick="page('config',this)">⚙️ Configuración</button>
+<button class="logout" onclick="logout()">↩ Cerrar sesión</button>
+</nav></aside>
+<main class="main"><div class="header"><div><h1 id="title">Inicio</h1><span class="muted">Sistema de gestión de Sergioland Roleplay</span></div><div class="userpill" id="userPill"></div></div><div id="content"></div></main>
+</section>
+
+<div id="modal" class="modal hidden"><div class="modalbox" id="modalContent"></div></div>
+<div id="toast" class="toast hidden"></div>
+
+<script>
+const KEY='sergioland_data_v3';
+let user=localStorage.getItem('sl_user_v3');
+let data=JSON.parse(localStorage.getItem(KEY)||'null')||{
+ sanctions:[
+ {u:'Sergio_1234',r:'Incumplimiento de normas internas',d:'7 días',date:'24/09/2026',s:'Activa'},
+ {u:'AlexRP',r:'Conducta inapropiada durante el servicio',d:'2 días',date:'22/09/2026',s:'Activa'},
+ {u:'Luna_01',r:'Sanción cumplida',d:'1 día',date:'15/09/2026',s:'Finalizada'}],
+ notices:[{title:'Recordatorio de normas',text:'Respeta las normas internas durante el roleplay.',date:'24/09/2026'}],
+ staff:[{u:'Sergio_1234',dept:'Dirección',role:'Administrador',status:'Activo'},{u:'AlexRP',dept:'Operaciones',role:'Supervisor',status:'Activo'}],
+ shifts:[{u:'Sergio_1234',dept:'Dirección',date:'24/09/2026',start:'16:00',end:'22:00',status:'Programado'}],
+ incidents:[{title:'Incidencia de ejemplo',desc:'Revisión rutinaria del parque.',date:'24/09/2026',status:'Resuelta'}],
+ settings:{theme:'Claro',notifications:true}
+};
+function persist(){localStorage.setItem(KEY,JSON.stringify(data))}
+function currentRole(){const member=data.staff.find(x=>x.u.toLowerCase()===String(user||'').toLowerCase());return member?member.role:'Visitante'}
+function canManage(){return /admin|direcci[oó]n/i.test(currentRole())}
+function requireManager(){if(!canManage()){toast('Solo Dirección o Administración puede realizar esta acción.');return false}return true}
+function esc(x){return String(x).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function toast(t){let x=document.getElementById('toast');x.textContent=t;x.classList.remove('hidden');setTimeout(()=>x.classList.add('hidden'),2200)}
+function login(){const field=document.getElementById('loginUser');const err=document.getElementById('loginErr');const x=field.value.trim();if(!x){err.textContent='Introduce tu usuario de Discord.';field.focus();return}user=x;localStorage.setItem('sl_user_v3',x);openApp()}
+function openApp(){document.getElementById('login').classList.add('hidden');document.getElementById('app').classList.remove('hidden');document.getElementById('userPill').textContent='Discord: '+user+' · '+currentRole();page('inicio',document.querySelector('#nav button'))}
+function logout(){localStorage.removeItem('sl_user_v3');location.reload()}
+const loginEl=document.getElementById('login'),app=document.getElementById('app');
+const titles={inicio:'Inicio',sanciones:'Sanciones',perfil:'Mi perfil',historial:'Historial',estadisticas:'Estadísticas',avisos:'Avisos',personal:'Personal',departamentos:'Departamentos',turnos:'Turnos',incidencias:'Incidencias',normas:'Normas',config:'Configuración'};
+function page(p,btn){document.querySelectorAll('#nav button').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');document.getElementById('title').textContent=titles[p];let c=document.getElementById('content');
+if(p==='inicio')c.innerHTML=home();
+if(p==='sanciones')c.innerHTML=sanctionsPage(false);
+if(p==='historial')c.innerHTML=sanctionsPage(true);
+if(p==='perfil')c.innerHTML=profile();
+if(p==='estadisticas')c.innerHTML=stats();
+if(p==='avisos')c.innerHTML=notices();
+if(p==='personal')c.innerHTML=staff();
+if(p==='departamentos')c.innerHTML=departments();
+if(p==='turnos')c.innerHTML=shifts();
+if(p==='incidencias')c.innerHTML=incidents();
+if(p==='normas')c.innerHTML=rules();
+if(p==='config')c.innerHTML=config();
+if(p==='sanciones'||p==='historial')renderSanctions(p==='historial')}
+function home(){let a=data.sanctions.filter(x=>x.s==='Activa').length;return `<div class="hero"><h1>🎢 Bienvenido a Sergioland</h1><p>Portal de gestión para el parque de atracciones de Roleplay.</p></div>
+<div class="stats"><div class="stat">⚠️ Sanciones<b>${data.sanctions.length}</b></div><div class="stat">🔴 Activas<b>${a}</b></div><div class="stat">👥 Personal<b>${data.staff.length}</b></div><div class="stat">🚨 Incidencias<b>${data.incidents.length}</b></div></div>
+<div class="security-note">Permisos de demostración: las acciones de gestión se muestran según el cargo local. Esto no sustituye una autenticación segura en servidor.</div><h2>Áreas del portal</h2><div class="tiles">
+${tile('⚠️','SANCIONES','Gestiona las sanciones del parque.',1)}
+${tile('🎟️','PERSONAL','Consulta y gestiona el personal.',6)}
+${tile('🏢','DEPARTAMENTOS','Áreas y funciones del parque.',7)}
+${tile('🕐','TURNOS','Organiza los turnos.',8)}
+${tile('🚨','INCIDENCIAS','Registra incidencias.',9)}
+${tile('📢','AVISOS','Comunicados internos.',5)}
+${tile('📖','NORMAS','Normativa del parque.',10)}
+${tile('📊','ESTADÍSTICAS','Resumen del portal.',4)}</div>`}
+function tile(i,t,d,n){return `<div class="tile" onclick="page(Object.keys(titles)[${n}],document.querySelectorAll('#nav button')[${n}])"><div class="ico">${i}</div><h3>${t}</h3><p class="muted">${d}</p></div>`}
+function sanctionsPage(hist){return `<div class="toolbar"><input id="sanQ" class="input" placeholder="Buscar usuario o motivo..." oninput="renderSanctions(${hist})"><button class="primary" onclick="newSanction()">+ Nueva sanción</button></div><div class="panel"><div id="sanTable"></div></div>`}
+function renderSanctions(hist){let q=(document.getElementById('sanQ')?.value||'').toLowerCase();let list=data.sanctions.filter(x=>(hist?x.s==='Finalizada':true)&&(x.u+' '+x.r).toLowerCase().includes(q));document.getElementById('sanTable').innerHTML=`<table><tr><th>Discord</th><th>Motivo</th><th>Duración</th><th>Fecha</th><th>Estado</th><th>Acciones</th></tr>${list.map((x,i)=>`<tr><td>${esc(x.u)}</td><td>${esc(x.r)}</td><td>${esc(x.d)}</td><td>${esc(x.date)}</td><td><span class="badge ${x.s==='Activa'?'red':'green'}">${x.s}</span></td><td><button class="secondary" onclick="toggleSan(${data.sanctions.indexOf(x)})">${x.s==='Activa'?'Finalizar':'Reabrir'}</button> <button class="danger" onclick="delSan(${data.sanctions.indexOf(x)})">Eliminar</button></td></tr>`).join('')}</table>`}
+function newSanction(){if(!requireManager())return;modal.innerHTML=`<div class="modalbox"><h2>⚠️ Nueva sanción</h2><input id="f1" placeholder="Usuario de Discord"><input id="f2" placeholder="Motivo"><input id="f3" placeholder="Duración"><select id="f4"><option>Activa</option><option>Finalizada</option></select><div class="actions"><button class="secondary" onclick="closeModal()">Cancelar</button><button class="primary" onclick="createSan()">Guardar</button></div></div>`;modal.classList.remove('hidden')}
+function createSan(){if(!requireManager())return;if(!f1.value.trim()||!f2.value.trim()||!f3.value.trim()){toast('Completa todos los campos');return}data.sanctions.unshift({u:f1.value.trim(),r:f2.value.trim(),d:f3.value.trim(),date:new Date().toLocaleDateString('es-ES'),s:f4.value});persist();closeModal();page('sanciones',document.querySelectorAll('#nav button')[1]);toast('Sanción creada')}
+function toggleSan(i){if(!requireManager())return;data.sanctions[i].s=data.sanctions[i].s==='Activa'?'Finalizada':'Activa';persist();renderSanctions(false);toast('Estado actualizado')}
+function delSan(i){if(!requireManager())return;if(confirm('¿Eliminar esta sanción?')){data.sanctions.splice(i,1);persist();renderSanctions(false);toast('Sanción eliminada')}}
+function profile(){let mine=data.sanctions.filter(x=>x.u.toLowerCase()===user.toLowerCase());return `<div class="grid2"><div class="panel"><h2>👤 ${esc(user)}</h2><p class="muted">Usuario de Discord</p><span class="badge green">Sesión activa</span></div><div class="panel"><h2>⚠️ Mis sanciones</h2><h1>${mine.length}</h1><p class="muted">Registradas con este usuario.</p></div></div>`}
+function stats(){let a=data.sanctions.filter(x=>x.s==='Activa').length;let fin=data.sanctions.length-a;let res=data.incidents.filter(x=>x.status==='Resuelta').length;return `<div class="stats"><div class="stat">Sanciones<b>${data.sanctions.length}</b></div><div class="stat">Activas<b>${a}</b></div><div class="stat">Finalizadas<b>${fin}</b></div><div class="stat">Incidencias resueltas<b>${res}</b></div></div><div class="panel"><h2>📊 Resumen</h2><p>Personal registrado: <b>${data.staff.length}</b></p><p>Turnos programados: <b>${data.shifts.filter(x=>x.status==='Programado').length}</b></p><p>Avisos publicados: <b>${data.notices.length}</b></p></div>`}
+function notices(){return `<div class="toolbar"><button class="primary" onclick="newNotice()">+ Nuevo aviso</button></div><div class="panel">${data.notices.map((n,i)=>`<div class="notice"><b>${esc(n.title)}</b><div>${esc(n.text)}</div><small class="muted">${esc(n.date)}</small> <button class="danger" onclick="delNotice(${i})">Eliminar</button></div>`).join('')||'<p class="muted">No hay avisos.</p>'}</div>`}
+function newNotice(){if(!requireManager())return;modal.innerHTML=`<div class="modalbox"><h2>📢 Nuevo aviso</h2><input id="nt" placeholder="Título"><textarea id="nx" rows="4" placeholder="Contenido"></textarea><div class="actions"><button class="secondary" onclick="closeModal()">Cancelar</button><button class="primary" onclick="createNotice()">Publicar</button></div></div>`;modal.classList.remove('hidden')}
+function createNotice(){if(!requireManager())return;if(!nt.value.trim()||!nx.value.trim())return;data.notices.unshift({title:nt.value.trim(),text:nx.value.trim(),date:new Date().toLocaleDateString('es-ES')});persist();closeModal();page('avisos',document.querySelectorAll('#nav button')[5]);toast('Aviso publicado')}
+function delNotice(i){if(!requireManager())return;data.notices.splice(i,1);persist();page('avisos',document.querySelectorAll('#nav button')[5])}
+function staff(){return `<div class="toolbar"><button class="primary" onclick="newStaff()">+ Añadir personal</button></div><div class="panel"><table><tr><th>Discord</th><th>Departamento</th><th>Cargo</th><th>Estado</th><th></th></tr>${data.staff.map((x,i)=>`<tr><td>${esc(x.u)}</td><td>${esc(x.dept)}</td><td>${esc(x.role)}</td><td><span class="badge green">${esc(x.status)}</span></td><td><button class="danger" onclick="delStaff(${i})">Eliminar</button></td></tr>`).join('')}</table></div>`}
+function newStaff(){if(!requireManager())return;modal.innerHTML=`<div class="modalbox"><h2>🎟️ Añadir personal</h2><input id="pf1" placeholder="Usuario de Discord"><input id="pf2" placeholder="Departamento"><input id="pf3" placeholder="Cargo"><div class="actions"><button class="secondary" onclick="closeModal()">Cancelar</button><button class="primary" onclick="createStaff()">Guardar</button></div></div>`;modal.classList.remove('hidden')}
+function createStaff(){if(!requireManager())return;if(!pf1.value.trim()||!pf2.value.trim()||!pf3.value.trim())return;data.staff.push({u:pf1.value.trim(),dept:pf2.value.trim(),role:pf3.value.trim(),status:'Activo'});persist();closeModal();page('personal',document.querySelectorAll('#nav button')[6]);toast('Personal añadido')}
+function delStaff(i){if(!requireManager())return;if(confirm('¿Eliminar este miembro?')){data.staff.splice(i,1);persist();page('personal',document.querySelectorAll('#nav button')[6])}}
+function departments(){let d=[['🎢','Atracciones','Operación y control de atracciones.'],['🛡️','Seguridad','Seguridad y cumplimiento de normas.'],['🎫','Atención al cliente','Taquillas y atención de visitantes.'],['🔧','Mantenimiento','Mantenimiento de instalaciones.'],['🎭','Animación','Eventos y entretenimiento.'],['📋','Dirección','Gestión y coordinación.']];return `<div class="tiles">${d.map(x=>`<div class="tile"><div class="ico">${x[0]}</div><h3>${x[1]}</h3><p class="muted">${x[2]}</p></div>`).join('')}</div>`}
+function shifts(){return `<div class="toolbar"><button class="primary" onclick="newShift()">+ Nuevo turno</button></div><div class="panel"><table><tr><th>Discord</th><th>Departamento</th><th>Fecha</th><th>Horario</th><th>Estado</th><th></th></tr>${data.shifts.map((x,i)=>`<tr><td>${esc(x.u)}</td><td>${esc(x.dept)}</td><td>${esc(x.date)}</td><td>${esc(x.start)} - ${esc(x.end)}</td><td><span class="badge blue">${esc(x.status)}</span></td><td><button class="danger" onclick="delShift(${i})">Eliminar</button></td></tr>`).join('')}</table></div>`}
+function newShift(){if(!requireManager())return;modal.innerHTML=`<div class="modalbox"><h2>🕐 Nuevo turno</h2><input id="tf1" placeholder="Usuario de Discord"><input id="tf2" placeholder="Departamento"><input id="tf3" type="date"><input id="tf4" type="time"><input id="tf5" type="time"><div class="actions"><button class="secondary" onclick="closeModal()">Cancelar</button><button class="primary" onclick="createShift()">Guardar</button></div></div>`;modal.classList.remove('hidden')}
+function createShift(){if(!requireManager())return;if(!tf1.value||!tf2.value||!tf3.value||!tf4.value||!tf5.value)return;data.shifts.push({u:tf1.value,dept:tf2.value,date:tf3.value,start:tf4.value,end:tf5.value,status:'Programado'});persist();closeModal();page('turnos',document.querySelectorAll('#nav button')[8]);toast('Turno creado')}
+function delShift(i){if(!requireManager())return;data.shifts.splice(i,1);persist();page('turnos',document.querySelectorAll('#nav button')[8])}
+function incidents(){return `<div class="toolbar"><button class="primary" onclick="newIncident()">+ Nueva incidencia</button></div><div class="panel">${data.incidents.map((x,i)=>`<div class="notice ${x.status==='Resuelta'?'success':'warn'}"><b>${esc(x.title)}</b><p>${esc(x.desc)}</p><small>${esc(x.date)} · ${esc(x.status)}</small> <button class="secondary" onclick="toggleIncident(${i})">${x.status==='Resuelta'?'Reabrir':'Resolver'}</button> <button class="danger" onclick="delIncident(${i})">Eliminar</button></div>`).join('')}</div>`}
+function newIncident(){if(!requireManager())return;modal.innerHTML=`<div class="modalbox"><h2>🚨 Nueva incidencia</h2><input id="it" placeholder="Título"><textarea id="ix" rows="4" placeholder="Descripción"></textarea><div class="actions"><button class="secondary" onclick="closeModal()">Cancelar</button><button class="primary" onclick="createIncident()">Registrar</button></div></div>`;modal.classList.remove('hidden')}
+function createIncident(){if(!requireManager())return;if(!it.value.trim()||!ix.value.trim())return;data.incidents.unshift({title:it.value.trim(),desc:ix.value.trim(),date:new Date().toLocaleDateString('es-ES'),status:'Abierta'});persist();closeModal();page('incidencias',document.querySelectorAll('#nav button')[9]);toast('Incidencia registrada')}
+function toggleIncident(i){if(!requireManager())return;data.incidents[i].status=data.incidents[i].status==='Resuelta'?'Abierta':'Resuelta';persist();page('incidencias',document.querySelectorAll('#nav button')[9])}
+function delIncident(i){if(!requireManager())return;data.incidents.splice(i,1);persist();page('incidencias',document.querySelectorAll('#nav button')[9])}
+function rules(){let r=['Respetar a todos los jugadores y trabajadores.','Seguir las instrucciones del personal durante las atracciones.','No utilizar información fuera de rol para obtener ventajas.','No realizar conductas que interrumpan deliberadamente el roleplay.','Las sanciones deben registrarse de forma clara y justificada.'];return `<div class="panel"><h2>📖 Normas de Sergioland Roleplay</h2>${r.map((x,i)=>`<div class="notice"><b>${i+1}.</b> ${x}</div>`).join('')}</div>`}
+function config(){return `<div class="panel"><h2>⚙️ Configuración</h2><label>Nombre mostrado</label><input class="input" value="${esc(user)}" id="cfgUser"><p><label><input type="checkbox" id="cfgNotif" ${data.settings.notifications?'checked':''}> Recibir avisos</label></p><button class="primary" onclick="saveConfig()">Guardar configuración</button><button class="secondary" style="margin-left:8px" onclick="resetDemo()">Restablecer datos de demo</button></div>`}
+function saveConfig(){let n=cfgUser.value.trim();if(n){user=n;localStorage.setItem('sl_user_v3',n);userPill.textContent='Discord: '+n+' · '+currentRole()}data.settings.notifications=cfgNotif.checked;persist();toast('Configuración guardada')}
+function resetDemo(){if(!requireManager())return;if(confirm('¿Restablecer todos los datos de demo?')){localStorage.removeItem(KEY);location.reload()}}
+function closeModal(){modal.classList.add('hidden');modal.innerHTML=''}
+if(user)openApp();
+</script>
+</body></html>
